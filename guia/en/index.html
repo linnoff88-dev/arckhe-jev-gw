@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>jev-gw — decision gateway for Jev</title>
+<meta content="One gateway for every Jev query: a daily spending limit, cache, abstention policy, and cost logging. When something fails, it returns a request for human review instead of breaking your system. Python stdlib, no dependencies." name="description"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --bg:#0c0c10; --bg2:#14141b; --card:#16161e; --line:#272730;
+    --txt:#e9e9ee; --mut:#9a9aa6; --amb:#E2A23B; --amb2:#f0c070; --sky:#38bdf8; --pro:#cbd5e1;
+    color-scheme:dark;
+  }
+  body.light{
+    --bg:#f6f7f9; --bg2:#eceef2; --card:#ffffff; --line:#e1e3ea;
+    --txt:#1a1a22; --mut:#5b5b68; --amb:#b9791d; --amb2:#a16207; --sky:#0369a1; --pro:#b45309;
+    color-scheme:light;
+  }
+  body.light .hero .glow{opacity:.5}
+  body.light pre{background:#0e0e14;color:#d6d6e0}
+  body.light pre .c{color:#8a8a98}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.65 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:Sora,sans-serif;line-height:1.15;margin:0}
+  a{color:var(--amb);text-decoration:none}
+  code,pre{font-family:"JetBrains Mono",monospace}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 22px}
+  .mut{color:var(--mut)} .amb{color:var(--amb)}
+  .chip{display:inline-block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--amb);font-weight:600;font-family:Sora}
+  nav{position:sticky;top:0;z-index:30;backdrop-filter:blur(12px);background:rgba(12,12,16,.78);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;gap:22px;height:60px}
+  nav .brand{display:flex;align-items:center;gap:8px;font-family:Sora;font-weight:800;letter-spacing:-.02em;color:var(--amb)}
+  nav .brand .emoji{font-size:1.25rem}
+  nav .sep{color:var(--mut);opacity:.45}
+  nav .inema{color:var(--sky);font-weight:600;font-size:.88rem;font-family:Sora}
+  nav .inema:hover{filter:brightness(1.15)}
+  nav .pro{color:var(--pro);font-weight:600;font-size:.88rem;font-family:Sora}
+  nav .pro:hover{filter:brightness(1.15)}
+  nav .clubpro{display:inline-flex;align-items:center;gap:6px}
+  nav .links{margin-left:auto;display:flex;align-items:center;gap:20px;font-size:.92rem}
+  nav .links a.sec{color:var(--mut)} nav .links a.sec:hover{color:var(--txt)}
+  .tgl{background:var(--bg2);border:1px solid var(--line);color:var(--txt);width:38px;height:38px;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:1.05rem}
+  .tgl:hover{border-color:var(--amb)}
+  .btn{display:inline-block;background:var(--amb);color:#1a1206;font-weight:600;padding:.6em 1.05em;border-radius:10px;font-family:Sora}
+  .btn.ghost{background:transparent;color:var(--txt);border:1px solid var(--line)}
+  @media(max-width:760px){nav .links a.sec{display:none}}
+  .hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+  .hero .glow{position:absolute;inset:-40% -20% auto auto;width:70%;height:600px;background:radial-gradient(closest-side,rgba(226,162,59,.22),transparent 70%);pointer-events:none}
+  .hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding:74px 22px}
+  .hero h1{font-size:clamp(2.2rem,5vw,3.5rem);font-weight:800;letter-spacing:-.025em}
+  .hero p.lead{font-size:1.18rem;color:var(--mut);margin:1.1em 0 1.6em;max-width:34ch}
+  .hero .cta{display:flex;gap:12px;flex-wrap:wrap}
+  .hero figure{margin:0;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:0 30px 80px -30px #000}
+  .hero figure img{width:100%;display:block}
+  @media(max-width:780px){.hero .wrap{grid-template-columns:1fr;padding:48px 22px}}
+  section{padding:62px 0;border-bottom:1px solid var(--line)}
+  section h2{font-size:clamp(1.5rem,3.4vw,2.1rem);font-weight:800;letter-spacing:-.02em}
+  section .sub{color:var(--mut);margin:.6em 0 2em;max-width:62ch}
+  .grid{display:grid;gap:16px}
+  .g3{grid-template-columns:repeat(3,1fr)} .g4{grid-template-columns:repeat(4,1fr)} .g2{grid-template-columns:repeat(2,1fr)}
+  @media(max-width:820px){.g3,.g4{grid-template-columns:1fr 1fr}}
+  @media(max-width:540px){.g2,.g3,.g4{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .card h3{font-size:1.05rem;margin-bottom:.4em}
+  .card p{color:var(--mut);font-size:.92rem;margin:0}
+  .num{display:inline-flex;width:30px;height:30px;align-items:center;justify-content:center;border-radius:8px;background:rgba(226,162,59,.14);color:var(--amb);font-family:Sora;font-weight:800;font-size:.9rem;margin-bottom:.7em}
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+  .flow span{background:var(--bg2);border:1px solid var(--line);border-radius:999px;padding:.45em .9em;font-size:.85rem;font-family:Sora;font-weight:600}
+  .flow .arr{color:var(--amb);border:none;background:none;padding:0 .1em}
+  pre{background:#0a0a0e;border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow:auto;font-size:.86rem;line-height:1.6;color:#d6d6e0}
+  pre .c{color:#6f6f7c} pre .k{color:var(--amb2)} pre .s{color:#9ece6a}
+  .step{display:grid;grid-template-columns:46px 1fr;gap:16px;margin-bottom:26px}
+  .step .b{width:46px;height:46px;border-radius:12px;background:var(--amb);color:#1a1206;font-family:Sora;font-weight:800;font-size:1.25rem;display:flex;align-items:center;justify-content:center}
+  .step h3{font-size:1.12rem;margin-bottom:.3em}
+  .step p{color:var(--mut);margin:.2em 0 .7em}
+  .ex{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:680px){.ex{grid-template-columns:1fr}}
+  .ex figure{margin:0;border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+  .ex figure img{width:100%;display:block}
+  .ex figcaption{padding:12px 14px;font-size:.88rem;color:var(--mut);background:var(--card)}
+  .phase{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid var(--line)}
+  .phase:last-child{border:none}
+  .phase .tag{flex:0 0 92px;font-family:Sora;font-weight:800;color:var(--amb)}
+  .phase .d strong{display:block;margin-bottom:.2em}
+  .phase .d span{color:var(--mut);font-size:.92rem}
+  footer{padding:46px 0;text-align:center;color:var(--mut);font-size:.9rem}
+  .pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:.3em .8em;font-size:.78rem;color:var(--mut);margin:0 4px}
+</style>
+<link href="https://inematds.github.io/jev-gw/guia/" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/jev-gw/guia/en/" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/jev-gw/guia/es/" hreflang="es" rel="alternate"/></head>
+<body><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="./" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../es/" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<nav><div class="wrap">
+<a class="brand" href="#top"><span class="emoji">🚪</span> jev-gw</a>
+<span class="sep">|</span>
+<span class="clubpro">
+<a class="inema" href="https://inema.club" rel="noopener" target="_blank">INEMA.CLUB</a>
+<span class="sep">-</span>
+<a class="pro" href="https://inema.pro" rel="noopener" target="_blank">PRO</a>
+</span>
+<div class="links">
+<a class="sec" href="#oque">What it is</a>
+<a class="sec" href="#fluxo">How it works</a>
+<a class="sec" href="#guia">User guide</a>
+<a class="sec" href="#exemplos">Examples</a>
+<a class="sec" href="#roadmap">Roadmap</a>
+<button aria-label="Switch theme" class="tgl" id="themeToggle" title="Switch theme">🌙</button>
+<a class="btn" href="https://github.com/inematds/jev-gw" rel="noopener" target="_blank">GitHub</a>
+</div>
+</div></nav>
+<header class="hero" id="top">
+<div class="glow"></div>
+<div class="wrap">
+<div>
+<span class="chip">Library · HTTP service · CLI — no dependencies</span>
+<h1>One gateway for every <span class="amb">decision</span>.</h1>
+<p class="lead">A spending limit, cache, and cost logging for every Jev query. And when Jev goes down, your system doesn’t go down with it: the response becomes a request for human review.</p>
+<div class="cta">
+<a class="btn" href="#guia">Start the guide</a>
+<a class="btn ghost" href="https://github.com/inematds/jev-gw" rel="noopener" target="_blank">View on GitHub</a>
+</div>
+</div>
+<figure><img alt="jev-gw — one gateway for every Jev decision" src="../assets/banner.jpg"/></figure> <!-- banner via gerar-banner.sh; se falhou, use assets/hero.png -->
+</div>
+</header>
+<section id="oque"><div class="wrap">
+<span class="chip">What it is</span>
+<h2>Calling Jev from five different places is the problem</h2>
+<p class="sub">Each integration point reinvents error handling, nobody knows how much was spent that day, and when the API goes down, the system goes down with it. The gateway is the single entry point that solves this once.</p>
+<div class="grid g3">
+<div class="card"><h3>💰 Daily spending limit</h3><p>A dollar amount per day, checked <strong>before</strong> for each query. If it exceeds the limit, it becomes a human review—not a way to discover the damage afterward.</p></div>
+<div class="card"><h3>🛟 Conservative failure handling</h3><p>Jev down, wrong key, timeout, unexpected response: it all returns <code>review</code>. <strong>No infrastructure failure is raised as an exception</strong> for the caller.</p></div>
+<div class="card"><h3>📊 Cost per call</h3><p>A JSONL line with cost, latency, and decision. The <code>state</code> — where your customer’s data lives — isn’t recorded.</p></div>
+</div>
+</div></section>
+<section id="fluxo"><div class="wrap">
+<span class="chip">How it works</span>
+<h2>The path of a decision</h2>
+<p class="sub">Six steps, always in this order—and the order was chosen, not drawn at random.</p>
+<div class="flow">
+<span>validation</span><span class="arr">→</span>
+<span>cache</span><span class="arr">→</span>
+<span>budget</span><span class="arr">→</span>
+<span>Jev query</span><span class="arr">→</span>
+<span>policy</span><span class="arr">→</span>
+<span>log</span>
+</div>
+<div class="grid g3" style="margin-top:26px">
+<div class="card"><h3>Cache before budget</h3><p>A response already in the cache costs nothing, so there’s no reason to block it because of a spending limit. Otherwise, a system that hit its limit would lose access even to what it already paid for.</p></div>
+<div class="card"><h3>Budget before the query</h3><p>Checking afterward would mean checking the damage, not preventing it.</p></div>
+<div class="card"><h3>Policy after the response</h3><p>Thresholds come from your domain, not the model. Email triage and clinical triage use the same Jev with different thresholds.</p></div>
+</div>
+<p class="sub" style="margin-top:22px">The document <a href="https://github.com/inematds/jev-gw/blob/main/ARQUITETURA.md">ARQUITETURA.md</a> explains each module, the failure contract, and what the gateway <em>no</em> does.</p>
+</div></section>
+<section id="pre"><div class="wrap">
+<span class="chip">Prerequisites</span>
+<h2>Python 3.10 and nothing else</h2>
+<p class="sub">No framework, no database, no queue, no <code>pip install</code>. The key is required only for the first actual query.</p>
+<div class="grid g3">
+<div class="card"><h3>Python 3.10+</h3><p>The entire gateway uses only the standard library.</p><pre><span class="k">python3 --version</span></pre></div>
+<div class="card"><h3>A Jev key</h3><p>TypeSafe directly or through OpenRouter. Only when making an actual query—tests and examples run without it.</p><pre><span class="k">export</span> TYPESAFE_API_KEY=<span class="s">...</span>
+<span class="c"># or: OPENROUTER_API_KEY + JEV_PROVIDER=openrouter</span></pre></div>
+<div class="card"><h3>Nothing else</h3><p>Copy the folder <code>jev_gw/</code> into your project if you prefer—it’s self-contained by design.</p><pre><span class="k">git clone</span> <span class="s">https://github.com/inematds/jev-gw.git</span></pre></div>
+</div>
+</div></section>
+<section id="guia"><div class="wrap">
+<span class="chip">User guide · step by step</span>
+<h2>Three ways to integrate</h2>
+<p class="sub">All three call the same function. There’s no logic that only the server has.</p>
+<div class="step"><div class="b">1</div><div>
+<h3>Download and run the tests</h3>
+<p>The 23 tests use a controlled evaluator—the test suite doesn’t spend a cent.</p>
+<pre><span class="k">git clone</span> <span class="s">https://github.com/inematds/jev-gw.git</span>
+<span class="k">cd</span> jev-gw <span class="k">&amp;&amp; python3</span> -m unittest discover -s testes
+<span class="c"># Ran 23 tests ... OK</span></pre>
+</div></div>
+<div class="step"><div class="b">2</div><div>
+<h3>Python system: import</h3>
+<p>No extra process, no open port. It’s the most direct way to embed it.</p>
+<pre><span class="k">from</span> jev_gw <span class="k">import</span> decidir
+
+saida = decidir(pedido)
+<span class="k">if</span> saida[<span class="s">'acao'</span>] == <span class="s">'suggest'</span>:
+    encaminhar(saida[<span class="s">'resposta'</span>][<span class="s">'answers'</span>][<span class="s">'fila'</span>][<span class="s">'choice'</span>])
+<span class="k">else</span>:
+    fila_de_revisao(saida[<span class="s">'motivo'</span>])  <span class="c"># includes “Jev went down”</span></pre>
+</div></div>
+<div class="step"><div class="b">3</div><div>
+<h3>Another language: start the service</h3>
+<p>Listening only on <code>127.0.0.1</code> — the gateway keeps your key.</p>
+<pre><span class="k">python3</span> -m jev_gw servir
+<span class="c"># jev-gw listening at http://127.0.0.1:8770 (dashboard at /painel)</span>
+
+<span class="k">curl</span> -X POST localhost:8770/decidir \
+  -H <span class="s">'content-type: application/json'</span> -d @pedido.json</pre>
+</div></div>
+<div class="step"><div class="b">4</div><div>
+<h3>The request</h3>
+<p>It’s the Jev API’s own format: context and one or more questions with alternatives.</p>
+<pre>{
+  <span class="s">"model"</span>: <span class="s">"jev-1.13.0"</span>,
+  <span class="s">"state"</span>: <span class="s">"Cliente: comprei ontem e quero devolver, nem abri a caixa."</span>,
+  <span class="s">"questions"</span>: {
+    <span class="s">"fila"</span>: {
+      <span class="s">"type"</span>: <span class="s">"choice"</span>,
+      <span class="s">"instructions"</span>: <span class="s">"Para qual fila encaminhar?"</span>,
+      <span class="s">"criteria"</span>: {
+        <span class="s">"reembolso"</span>: <span class="s">"Pedido de devolução ou estorno"</span>,
+        <span class="s">"suporte"</span>: <span class="s">"Dúvida de uso ou defeito"</span>,
+        <span class="s">"insuficiente"</span>: <span class="s">"Não dá para decidir com o que está escrito"</span>
+      }
+    }
+  }
+}</pre>
+</div></div>
+<div class="step"><div class="b">5</div><div>
+<h3>Adjust the limit and cache</h3>
+<p>Everything is configured through environment variables, with working defaults. <code>0</code> the gateway shuts down at the limit.</p>
+<pre><span class="k">export</span> JEV_GW_TETO_DIARIO=<span class="s">1.00</span>   <span class="c"># dollars per day</span>
+<span class="k">export</span> JEV_GW_TTL_CACHE=<span class="s">900</span>     <span class="c"># seconds a response remains valid</span>
+<span class="k">export</span> JEV_GW_TIMEOUT=<span class="s">5</span>         <span class="c"># seconds per query</span></pre>
+</div></div>
+<div class="step"><div class="b">6</div><div>
+<h3>Track spending</h3>
+<p>A dashboard in your browser, or JSON in the terminal to add to your monitoring.</p>
+<pre><span class="k">python3</span> -m jev_gw custo
+<span class="c"># {"chamadas": 2, "consultas_reais": 1, "cache": 1, "gasto_usd": 1.6e-05, ...}</span>
+
+<span class="s">http://127.0.0.1:8770/painel</span>  <span class="c"># daily spend, latency, latest calls</span></pre>
+</div></div>
+<div class="step"><div class="b">7</div><div>
+<h3>The failure contract</h3>
+<p>Only one error is raised as an exception: a request outside Jev’s contract, which is your bug and needs to be surfaced. Everything else is a decision.</p>
+<pre><span class="c"># 200  decision made — including “review” because Jev went down</span>
+<span class="c"># 422  valid request, but outside Jev's contract</span>
+<span class="c"># 400  malformed JSON or invalid option</span>
+<span class="c"># exceeding the limit returns 200, not 429: for the caller, it isn’t an error,</span>
+<span class="c"># it is a decision to route for review</span></pre>
+</div></div>
+</div></section>
+<section id="exemplos"><div class="wrap">
+<span class="chip">Examples</span>
+<h2>Measured on 22/09/2026, not estimated</h2>
+<p class="sub">A real Jev query through OpenRouter, followed immediately by the same query again.</p>
+<div class="grid g3">
+<div class="card"><h3>Actual query</h3><p>Decision <code>reembolso</code>, confidence 1.0.<br/><strong>610 ms · US$ 0.0000155</strong></p></div>
+<div class="card"><h3>Same query, again</h3><p>Served from cache.<br/><strong>0 ms · US$ 0.00</strong></p></div>
+<div class="card"><h3>No key configured</h3><p>Returned <code>review</code> logged the reason, and the client continued. <strong>No exceptions.</strong></p></div>
+</div>
+<p class="sub" style="margin-top:22px">Raw evidence: <a href="https://github.com/inematds/jev-gw/blob/main/reports/smoke-2026-09-22.jsonl">reports/smoke-2026-09-22.jsonl</a>. This is an integration and contract test — <strong>not a decision quality benchmark</strong>, and no savings are claimed without comparable measurements.</p>
+</div></section>
+<section id="roadmap"><div class="wrap">
+<span class="chip">Roadmap</span>
+<h2>What exists and what doesn’t</h2>
+<p class="sub">Actual status as of 09/22/2026, with no promises about what hasn’t been written yet.</p>
+<div class="phase"><div class="tag">Ready</div><div class="d"><strong>Library, HTTP service, and CLI</strong><span>The same function powers all three. 23 tests passing, including the failure path and the end-to-end server.</span></div></div>
+<div class="phase"><div class="tag">Ready</div><div class="d"><strong>Limits, cache, logging, and dashboard</strong><span>Cache and limit measured in a real call; the dashboard shows daily spend, latency, and the latest calls.</span></div></div>
+<div class="phase"><div class="tag">Doesn’t</div><div class="d"><strong>It’s not a code agent proxy</strong><span>It doesn’t sit between your Codex/Claude Code and the model. That’s what jev-gateway (an independent TypeScript project) is for—it complements this project.</span></div></div>
+<div class="phase"><div class="tag">Doesn’t</div><div class="d"><strong>Doesn’t execute actions</strong><span>It returns a suggestion. Your system applies it, with its own permissions. No decision here triggers an API call, email, or database write.</span></div></div>
+<div class="phase"><div class="tag">Next</div><div class="d"><strong>Thresholds per question</strong><span>Today, the threshold applies to the entire request; ideally, each question would have its own, because the cost of getting it wrong varies by question.</span></div></div>
+<div class="phase"><div class="tag">Next</div><div class="d"><strong>Adopt in openpcbotv3</strong><span>The bot currently has its own gateway with a budget and observation mode. Unifying them means one place for limits, costs, and logging.</span></div></div>
+</div></section>
+<footer>
+<div class="wrap">
+<div class="pill">Python 3.10+ (stdlib only)</div><div class="pill">TypeSafe · OpenRouter</div><div class="pill">23 tests, zero credits</div>
+<p style="margin-top:18px">jev-gw · MIT · Jev client vendored from Jev Decision Lab ·
+      <a href="https://github.com/inematds/jev-gw">inematds/jev-gw</a> ·
+      <a href="https://inema.club">INEMA.CLUB</a></p>
+</div>
+</footer>
+<script>
+  (function(){
+    var KEY='jev-gw-theme'; // troque jev-gw pelo nome do projeto
+    var b=document.body, t=document.getElementById('themeToggle');
+    if(localStorage.getItem(KEY)==='light'){ b.classList.add('light'); t.textContent='☀️'; }
+    t.addEventListener('click',function(){
+      var light=b.classList.toggle('light');
+      t.textContent=light?'☀️':'🌙';
+      localStorage.setItem(KEY, light?'light':'dark');
+    });
+  })();
+</script>
+</body>
+</html>
