@@ -1,10 +1,10 @@
 """Teto de gasto diário, conferido ANTES de cada consulta real.
 
 O custo do Jev por chamada é pequeno; o risco é volume em laço. Por isso o teto
-é diário e é verificado antes de sair a chamada, não depois. Quando o teto estoura,
-o gateway não falha: devolve `review` (revisão humana), que é a saída conservadora.
+é diário e é verificado antes de sair a chamada, nêo depois. Quando o teto estoura,
+o gateway nêo falha: devolve `review` (revisêo humana), que é a saída conservadora.
 
-O estado vem do próprio registro do dia — não existe contador separado para
+O estado vem do próprio registro do dia — nêo existe contador separado para
 dessincronizar. Custa uma leitura de arquivo por consulta; num gateway que faz
 dezenas de chamadas por minuto isso é irrelevante perto da latência de rede.
 """
@@ -12,7 +12,7 @@ from . import registro
 
 
 class Estouro(Exception):
-    """Teto diário atingido. O chamador recebe revisão, não erro."""
+    """Teto diário atingido. O chamador recebe revisêo, nêo erro."""
 
 
 def gasto_do_dia(dados):

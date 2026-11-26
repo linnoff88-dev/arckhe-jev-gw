@@ -119,7 +119,7 @@ independent TypeScript project), which complements this one.
 
 **It does not execute actions.** It returns a suggestion; your system applies it, with its own permissions.
 
-Full list in [ARQUITETURA.md, section 6](ARQUITETURA.md#6-o-que-este-gateway-não-faz).
+Full list in [ARQUITETURA.md, section 6](ARQUITETURA.md#6-o-que-este-gateway-nêo-faz).
 
 ## Related
 

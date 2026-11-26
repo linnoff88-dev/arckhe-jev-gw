@@ -2,7 +2,7 @@
 
 Uma linha por consulta, append-only. É o que permite responder três perguntas
 sem instrumentar nada no sistema que chamou: quanto gastei hoje, o que foi
-para revisão, e o que o Jev respondeu naquele pedido específico.
+para revisêo, e o que o Jev respondeu naquele pedido específico.
 """
 import json
 import os
@@ -22,10 +22,10 @@ def caminho(dados: Path, dia=None):
 
 
 def gravar(dados: Path, evento: dict):
-    """Acrescenta um evento. Nunca levanta exceção para o chamador.
+    """Acrescenta um evento. Nunca levanta exceçêo para o chamador.
 
-    Um gateway que quebra a aplicação porque não conseguiu escrever log é pior
-    que um gateway sem log. Falha de escrita vira campo no retorno, não erro.
+    Um gateway que quebra a aplicaçêo porque nêo conseguiu escrever log é pior
+    que um gateway sem log. Falha de escrita vira campo no retorno, nêo erro.
     """
     linha = dict(evento, momento=datetime.now(timezone.utc).isoformat(timespec='seconds'))
     try:
@@ -51,7 +51,7 @@ def ler(dados: Path, dia=None):
         try:
             eventos.append(json.loads(linha))
         except json.JSONDecodeError:
-            continue  # linha truncada por queda no meio da escrita: ignora, não derruba o relatório
+            continue  # linha truncada por queda no meio da escrita: ignora, nêo derruba o relatório
     return eventos
 
 

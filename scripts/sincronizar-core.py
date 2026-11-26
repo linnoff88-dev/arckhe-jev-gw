@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Revendoriza jev_lab/core.py (do repo inematds/jev) em jev_gw/vendor/jev_core.py.
 
-Por que existe: jev-gw não importa o repo vizinho — ele carrega uma cópia, para
+Por que existe: jev-gw nêo importa o repo vizinho — ele carrega uma cópia, para
 rodar sozinho em qualquer máquina. Este script faz a cópia de forma auditável:
 grava o sha256 da origem no cabeçalho e mostra o que mudou antes de escrever.
 
@@ -24,18 +24,18 @@ ORIGEM_PADRAO = Path.home()/'projetos/jev/jev_lab/core.py'
 
 CABECALHO = '''"""Cópia vendorizada de jev_lab/core.py (Jev Decision Lab, github.com/inematds/jev).
 
-NÃO EDITE À MÃO. Ressincronize com:  python3 scripts/sincronizar-core.py
+NêO EDITE À MêO. Ressincronize com:  python3 scripts/sincronizar-core.py
 
 origem:  {origem}
 sha256:  {sha}
 data:    {data}
 
 Por que vendorizar em vez de importar: jev-gw é um serviço que roda sozinho, às
-vezes em outra máquina, e não pode depender de um repo irmão estar no disco na
-versão certa. O script de sincronização mostra o diff e atualiza o hash acima.
+vezes em outra máquina, e nêo pode depender de um repo irmêo estar no disco na
+versêo certa. O script de sincronizaçêo mostra o diff e atualiza o hash acima.
 
-Única alteração aplicada na cópia: `from . import __version__` vira uma constante,
-porque aqui não existe o pacote jev_lab em volta.
+Única alteraçêo aplicada na cópia: `from . import __version__` vira uma constante,
+porque aqui nêo existe o pacote jev_lab em volta.
 """
 '''
 
@@ -46,18 +46,18 @@ def adaptar(texto: str) -> str:
                       "__version__ = 'vendorizado-em-jev-gw'",
                       texto, count=1, flags=re.M)
     if not n:
-        print('aviso: o import de __version__ não foi encontrado — confira se o core mudou.', file=sys.stderr)
+        print('aviso: o import de __version__ nêo foi encontrado — confira se o core mudou.', file=sys.stderr)
     return novo
 
 
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument('--origem', type=Path, default=ORIGEM_PADRAO)
-    p.add_argument('--conferir', action='store_true', help='não escreve; sai 1 se estiver desatualizado')
+    p.add_argument('--conferir', action='store_true', help='nêo escreve; sai 1 se estiver desatualizado')
     a = p.parse_args()
 
     if not a.origem.is_file():
-        sys.exit(f'não achei a origem: {a.origem}\nClone github.com/inematds/jev ao lado, ou passe --origem.')
+        sys.exit(f'nêo achei a origem: {a.origem}\nClone github.com/inematds/jev ao lado, ou passe --origem.')
 
     bruto = a.origem.read_text(encoding='utf-8')
     sha = hashlib.sha256(bruto.encode()).hexdigest()

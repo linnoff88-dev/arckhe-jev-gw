@@ -119,7 +119,7 @@ independiente, en TypeScript), que es complementario a este.
 
 **No ejecuta acciones.** Devuelve sugerencias; quien las aplica es tu sistema, con sus permisos.
 
-Lista completa en [ARQUITETURA.md, sección 6](ARQUITETURA.md#6-o-que-este-gateway-não-faz).
+Lista completa en [ARQUITETURA.md, sección 6](ARQUITETURA.md#6-o-que-este-gateway-nêo-faz).
 
 ## Relacionados
 

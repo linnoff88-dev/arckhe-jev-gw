@@ -1,14 +1,14 @@
-"""O caminho de uma decisão: validação → orçamento → cache → Jev → política → registro.
+"""O caminho de uma decisêo: validaçêo → orçamento → cache → Jev → política → registro.
 
-Esta é a única porta. Servidor HTTP e CLI são cascas em cima de `decidir()`.
+Esta é a única porta. Servidor HTTP e CLI sêo cascas em cima de `decidir()`.
 
-Contrato de falha, que é o ponto do gateway: **`decidir()` não levanta exceção por
+Contrato de falha, que é o ponto do gateway: **`decidir()` nêo levanta exceçêo por
 falha de infraestrutura**. Jev fora do ar, chave ausente, teto estourado, resposta
 inválida — tudo devolve `acao='review'` com o motivo. O sistema que chamou segue o
-seu caminho normal (revisão humana, regra antiga, fila) em vez de quebrar.
+seu caminho normal (revisêo humana, regra antiga, fila) em vez de quebrar.
 
-A única exceção que sai daqui é `PedidoInvalido`: erro de programação no pedido,
-que precisa aparecer no desenvolvimento e não pode ser mascarado como "revise".
+A única exceçêo que sai daqui é `PedidoInvalido`: erro de programaçêo no pedido,
+que precisa aparecer no desenvolvimento e nêo pode ser mascarado como "revise".
 """
 import time
 
@@ -20,7 +20,7 @@ from .vendor.jev_core import LabError, evaluate, policy, validate_request, valid
 
 
 class PedidoInvalido(ValueError):
-    """O pedido não respeita o contrato do Jev (perguntas, tipos, tamanho)."""
+    """O pedido nêo respeita o contrato do Jev (perguntas, tipos, tamanho)."""
 
 
 def _resultado(acao, motivo, *, origem, resposta=None, decisoes=None, custo=0.0, latencia=0.0, impressao=None):
@@ -43,13 +43,13 @@ def _custo_de(resposta):
 
 def decidir(pedido, *, sensivel=False, limiar=0.9, probabilidade=0.9,
             avaliador=None, conf=None, usar_cache=True, gravar=True):
-    """Consulta o Jev por trás do gateway e devolve a decisão já com política aplicada.
+    """Consulta o Jev por trás do gateway e devolve a decisêo já com política aplicada.
 
     pedido      dict no formato da API do Jev (model, state, questions)
-    sensivel    True força revisão humana em todas as perguntas (domínio supervisionado)
-    limiar      confiança mínima para virar sugestão (padrão 0.9)
+    sensivel    True força revisêo humana em todas as perguntas (domínio supervisionado)
+    limiar      confiança mínima para virar sugestêo (padrêo 0.9)
     avaliador   substitui a chamada real — é assim que se testa sem gastar crédito
-    conf        dict de configuração; o padrão vem do ambiente (jev_gw.config)
+    conf        dict de configuraçêo; o padrêo vem do ambiente (jev_gw.config)
     """
     conf = conf or _config.carregar()
     dados = conf['dados']
@@ -62,7 +62,7 @@ def decidir(pedido, *, sensivel=False, limiar=0.9, probabilidade=0.9,
     chave = _cache.impressao(pedido)
     controlado = avaliador is not None
 
-    # 1. cache — antes do orçamento: resposta repetida não custa e não deve ser barrada
+    # 1. cache — antes do orçamento: resposta repetida nêo custa e nêo deve ser barrada
     if usar_cache and not controlado:
         guardado = _cache.buscar(dados, chave, conf['ttl_cache'])
         if guardado is not None:
@@ -95,7 +95,7 @@ def decidir(pedido, *, sensivel=False, limiar=0.9, probabilidade=0.9,
         if gravar:
             _registrar(dados, pedido, saida, ok=False)
         return saida
-    except Exception as erro:  # provedor exótico, avaliador do usuário com bug: ainda assim não derruba
+    except Exception as erro:  # provedor exótico, avaliador do usuário com bug: ainda assim nêo derruba
         latencia = (time.monotonic()-inicio)*1000
         saida = _resultado('review', f'Falha inesperada na consulta: {erro}', origem='erro',
                            latencia=latencia, impressao=chave)
@@ -122,8 +122,8 @@ def _aplicar_politica(pedido, bruta, sensivel, limiar, probabilidade, *, origem,
     }
     revisar = [n for n, d in decisoes.items() if d['action'] == 'review']
     acao = 'review' if revisar else 'suggest'
-    motivo = (f'Revisão em: {", ".join(sorted(revisar))}.' if revisar
-              else 'Sugestão em observação. Nenhuma ação externa executada.')
+    motivo = (f'Revisêo em: {", ".join(sorted(revisar))}.' if revisar
+              else 'Sugestêo em observaçêo. Nenhuma açêo externa executada.')
     return _resultado(acao, motivo, origem=origem, resposta=bruta, decisoes=decisoes,
                       custo=custo, latencia=latencia, impressao=impressao)
 
@@ -153,6 +153,6 @@ def saude(conf=None):
         'gasto_hoje_usd': gasto,
         'ttl_cache_s': conf['ttl_cache'],
         'timeout_s': conf['timeout'],
-        'provedor': conf['provedor'] or 'typesafe (padrão)',
+        'provedor': conf['provedor'] or 'typesafe (padrêo)',
         'dados': str(conf['dados']),
     }

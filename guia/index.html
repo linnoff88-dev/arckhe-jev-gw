@@ -4,8 +4,8 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>jev-gw — gateway de decisão para o Jev</title>
-<meta content="Porta única para toda consulta ao Jev: teto de gasto diário, cache, política de abstenção e registro de custo. Quando algo falha, devolve revisão humana em vez de quebrar o seu sistema. Python stdlib, sem dependências." name="description"/>
+<title>jev-gw — gateway de decisêo para o Jev</title>
+<meta content="Porta única para toda consulta ao Jev: teto de gasto diário, cache, política de abstençêo e registro de custo. Quando algo falha, devolve revisêo humana em vez de quebrar o seu sistema. Python stdlib, sem dependências." name="description"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet"/>
@@ -116,32 +116,32 @@
 <div class="wrap">
 <div>
 <span class="chip">Biblioteca · serviço HTTP · CLI — sem dependências</span>
-<h1>Uma porta para toda <span class="amb">decisão</span>.</h1>
-<p class="lead">Teto de gasto, cache e registro de custo em toda consulta ao Jev. E quando o Jev cai, o seu sistema não cai junto: a resposta vira revisão humana.</p>
+<h1>Uma porta para toda <span class="amb">decisêo</span>.</h1>
+<p class="lead">Teto de gasto, cache e registro de custo em toda consulta ao Jev. E quando o Jev cai, o seu sistema nêo cai junto: a resposta vira revisêo humana.</p>
 <div class="cta">
 <a class="btn" href="#guia">Começar o guia</a>
 <a class="btn ghost" href="https://github.com/inematds/jev-gw" rel="noopener" target="_blank">Ver no GitHub</a>
 </div>
 </div>
-<figure><img alt="jev-gw — uma porta para toda decisão do Jev" src="assets/banner.jpg"/></figure> <!-- banner via gerar-banner.sh; se falhou, use assets/hero.png -->
+<figure><img alt="jev-gw — uma porta para toda decisêo do Jev" src="assets/banner.jpg"/></figure> <!-- banner via gerar-banner.sh; se falhou, use assets/hero.png -->
 </div>
 </header>
 <section id="oque"><div class="wrap">
 <span class="chip">O que é</span>
 <h2>Chamar o Jev de cinco lugares diferentes é o problema</h2>
-<p class="sub">Cada ponto de integração reinventa o tratamento de erro, ninguém sabe quanto se gastou no dia, e quando a API cai o sistema cai junto. O gateway é a porta única que resolve isso uma vez só.</p>
+<p class="sub">Cada ponto de integraçêo reinventa o tratamento de erro, ninguém sabe quanto se gastou no dia, e quando a API cai o sistema cai junto. O gateway é a porta única que resolve isso uma vez só.</p>
 <div class="grid g3">
-<div class="card"><h3>💰 Teto de gasto diário</h3><p>Um valor em dólares por dia, conferido <strong>antes</strong> de cada consulta. Estourou, vira revisão humana — não adianta descobrir o prejuízo depois.</p></div>
-<div class="card"><h3>🛟 Falha conservadora</h3><p>Jev fora do ar, chave errada, timeout, resposta estranha: tudo devolve <code>review</code>. <strong>Nenhuma falha de infraestrutura sobe como exceção</strong> para quem chamou.</p></div>
-<div class="card"><h3>📊 Custo por chamada</h3><p>Uma linha JSONL com custo, latência e decisão. O <code>state</code> — onde moram os dados do seu cliente — não é gravado.</p></div>
+<div class="card"><h3>💰 Teto de gasto diário</h3><p>Um valor em dólares por dia, conferido <strong>antes</strong> de cada consulta. Estourou, vira revisêo humana — nêo adianta descobrir o prejuízo depois.</p></div>
+<div class="card"><h3>🛟 Falha conservadora</h3><p>Jev fora do ar, chave errada, timeout, resposta estranha: tudo devolve <code>review</code>. <strong>Nenhuma falha de infraestrutura sobe como exceçêo</strong> para quem chamou.</p></div>
+<div class="card"><h3>📊 Custo por chamada</h3><p>Uma linha JSONL com custo, latência e decisêo. O <code>state</code> — onde moram os dados do seu cliente — nêo é gravado.</p></div>
 </div>
 </div></section>
 <section id="fluxo"><div class="wrap">
 <span class="chip">Como funciona</span>
-<h2>O caminho de uma decisão</h2>
-<p class="sub">Seis etapas, sempre nesta ordem — e a ordem foi escolhida, não sorteada.</p>
+<h2>O caminho de uma decisêo</h2>
+<p class="sub">Seis etapas, sempre nesta ordem — e a ordem foi escolhida, nêo sorteada.</p>
 <div class="flow">
-<span>validação</span><span class="arr">→</span>
+<span>validaçêo</span><span class="arr">→</span>
 <span>cache</span><span class="arr">→</span>
 <span>orçamento</span><span class="arr">→</span>
 <span>consulta ao Jev</span><span class="arr">→</span>
@@ -149,18 +149,18 @@
 <span>registro</span>
 </div>
 <div class="grid g3" style="margin-top:26px">
-<div class="card"><h3>Cache antes do orçamento</h3><p>Resposta já guardada não custa nada, então não faz sentido barrá-la por teto. Ao contrário, um sistema com teto estourado perderia até o que já pagou.</p></div>
-<div class="card"><h3>Orçamento antes da consulta</h3><p>Verificar depois seria verificar o prejuízo, não evitá-lo.</p></div>
-<div class="card"><h3>Política depois da resposta</h3><p>Os limiares são do seu domínio, não do modelo. Triagem de e-mail e triagem clínica usam o mesmo Jev e limiares diferentes.</p></div>
+<div class="card"><h3>Cache antes do orçamento</h3><p>Resposta já guardada nêo custa nada, entêo nêo faz sentido barrá-la por teto. Ao contrário, um sistema com teto estourado perderia até o que já pagou.</p></div>
+<div class="card"><h3>Orçamento antes da consulta</h3><p>Verificar depois seria verificar o prejuízo, nêo evitá-lo.</p></div>
+<div class="card"><h3>Política depois da resposta</h3><p>Os limiares sêo do seu domínio, nêo do modelo. Triagem de e-mail e triagem clínica usam o mesmo Jev e limiares diferentes.</p></div>
 </div>
-<p class="sub" style="margin-top:22px">O documento <a href="https://github.com/inematds/jev-gw/blob/main/ARQUITETURA.md">ARQUITETURA.md</a> explica cada módulo, o contrato de falha e o que o gateway <em>não</em> faz.</p>
+<p class="sub" style="margin-top:22px">O documento <a href="https://github.com/inematds/jev-gw/blob/main/ARQUITETURA.md">ARQUITETURA.md</a> explica cada módulo, o contrato de falha e o que o gateway <em>nêo</em> faz.</p>
 </div></section>
 <section id="pre"><div class="wrap">
 <span class="chip">Pré-requisitos</span>
 <h2>Python 3.10 e mais nada</h2>
 <p class="sub">Sem framework, sem banco, sem fila, sem <code>pip install</code>. A chave só é exigida na primeira consulta real.</p>
 <div class="grid g3">
-<div class="card"><h3>Python 3.10+</h3><p>O gateway inteiro usa só a biblioteca padrão.</p><pre><span class="k">python3 --version</span></pre></div>
+<div class="card"><h3>Python 3.10+</h3><p>O gateway inteiro usa só a biblioteca padrêo.</p><pre><span class="k">python3 --version</span></pre></div>
 <div class="card"><h3>Uma chave do Jev</h3><p>TypeSafe direto ou pelo OpenRouter. Só na hora de consultar de verdade — testes e exemplos rodam sem ela.</p><pre><span class="k">export</span> TYPESAFE_API_KEY=<span class="s">...</span>
 <span class="c"># ou: OPENROUTER_API_KEY + JEV_PROVIDER=openrouter</span></pre></div>
 <div class="card"><h3>Nada mais</h3><p>Copie a pasta <code>jev_gw/</code> para dentro do seu projeto se preferir — é autocontida de propósito.</p><pre><span class="k">git clone</span> <span class="s">https://github.com/inematds/jev-gw.git</span></pre></div>
@@ -169,10 +169,10 @@
 <section id="guia"><div class="wrap">
 <span class="chip">Guia de uso · passo a passo</span>
 <h2>Três formas de incorporar</h2>
-<p class="sub">As três chamam a mesma função. Não existe lógica que só o servidor tem.</p>
+<p class="sub">As três chamam a mesma funçêo. Nêo existe lógica que só o servidor tem.</p>
 <div class="step"><div class="b">1</div><div>
 <h3>Baixe e rode os testes</h3>
-<p>Os 23 testes usam avaliador controlado — a suíte não gasta um centavo.</p>
+<p>Os 23 testes usam avaliador controlado — a suíte nêo gasta um centavo.</p>
 <pre><span class="k">git clone</span> <span class="s">https://github.com/inematds/jev-gw.git</span>
 <span class="k">cd</span> jev-gw <span class="k">&amp;&amp; python3</span> -m unittest discover -s testes
 <span class="c"># Ran 23 tests ... OK</span></pre>
@@ -208,9 +208,9 @@ saida = decidir(pedido)
       <span class="s">"type"</span>: <span class="s">"choice"</span>,
       <span class="s">"instructions"</span>: <span class="s">"Para qual fila encaminhar?"</span>,
       <span class="s">"criteria"</span>: {
-        <span class="s">"reembolso"</span>: <span class="s">"Pedido de devolução ou estorno"</span>,
+        <span class="s">"reembolso"</span>: <span class="s">"Pedido de devoluçêo ou estorno"</span>,
         <span class="s">"suporte"</span>: <span class="s">"Dúvida de uso ou defeito"</span>,
-        <span class="s">"insuficiente"</span>: <span class="s">"Não dá para decidir com o que está escrito"</span>
+        <span class="s">"insuficiente"</span>: <span class="s">"Nêo dá para decidir com o que está escrito"</span>
       }
     }
   }
@@ -218,7 +218,7 @@ saida = decidir(pedido)
 </div></div>
 <div class="step"><div class="b">5</div><div>
 <h3>Ajuste o teto e o cache</h3>
-<p>Tudo por variável de ambiente, tudo com padrão que já funciona. <code>0</code> no teto desliga o gateway.</p>
+<p>Tudo por variável de ambiente, tudo com padrêo que já funciona. <code>0</code> no teto desliga o gateway.</p>
 <pre><span class="k">export</span> JEV_GW_TETO_DIARIO=<span class="s">1.00</span>   <span class="c"># dólares por dia</span>
 <span class="k">export</span> JEV_GW_TTL_CACHE=<span class="s">900</span>     <span class="c"># segundos que uma resposta vale</span>
 <span class="k">export</span> JEV_GW_TIMEOUT=<span class="s">5</span>         <span class="c"># segundos por consulta</span></pre>
@@ -233,35 +233,35 @@ saida = decidir(pedido)
 </div></div>
 <div class="step"><div class="b">7</div><div>
 <h3>O contrato de falha</h3>
-<p>Só um erro sobe como exceção: pedido fora do contrato do Jev, que é bug seu e precisa aparecer. Todo o resto é decisão.</p>
-<pre><span class="c"># 200  decisão tomada — inclusive "review" porque o Jev caiu</span>
+<p>Só um erro sobe como exceçêo: pedido fora do contrato do Jev, que é bug seu e precisa aparecer. Todo o resto é decisêo.</p>
+<pre><span class="c"># 200  decisêo tomada — inclusive "review" porque o Jev caiu</span>
 <span class="c"># 422  pedido íntegro, mas fora do contrato do Jev</span>
-<span class="c"># 400  JSON quebrado ou opção inválida</span>
-<span class="c"># teto estourado é 200, não 429: para quem chamou não é erro,</span>
-<span class="c"># é uma decisão de encaminhar para revisão</span></pre>
+<span class="c"># 400  JSON quebrado ou opçêo inválida</span>
+<span class="c"># teto estourado é 200, nêo 429: para quem chamou nêo é erro,</span>
+<span class="c"># é uma decisêo de encaminhar para revisêo</span></pre>
 </div></div>
 </div></section>
 <section id="exemplos"><div class="wrap">
 <span class="chip">Exemplos</span>
-<h2>Medido em 22/09/2026, não estimado</h2>
+<h2>Medido em 22/09/2026, nêo estimado</h2>
 <p class="sub">Uma consulta real ao Jev pelo OpenRouter, e a mesma consulta repetida logo depois.</p>
 <div class="grid g3">
-<div class="card"><h3>Consulta real</h3><p>Decisão <code>reembolso</code>, confiança 1,0.<br/><strong>610 ms · US$ 0,0000155</strong></p></div>
+<div class="card"><h3>Consulta real</h3><p>Decisêo <code>reembolso</code>, confiança 1,0.<br/><strong>610 ms · US$ 0,0000155</strong></p></div>
 <div class="card"><h3>Mesma consulta, de novo</h3><p>Veio do cache.<br/><strong>0 ms · US$ 0,00</strong></p></div>
-<div class="card"><h3>Sem chave configurada</h3><p>Devolveu <code>review</code> com o motivo, registrou, e o cliente seguiu. <strong>Nenhuma exceção.</strong></p></div>
+<div class="card"><h3>Sem chave configurada</h3><p>Devolveu <code>review</code> com o motivo, registrou, e o cliente seguiu. <strong>Nenhuma exceçêo.</strong></p></div>
 </div>
-<p class="sub" style="margin-top:22px">Evidência bruta: <a href="https://github.com/inematds/jev-gw/blob/main/reports/smoke-2026-09-22.jsonl">reports/smoke-2026-09-22.jsonl</a>. Isto é teste de integração e de contrato — <strong>não é benchmark de qualidade de decisão</strong>, e nenhuma economia é afirmada sem medição comparável.</p>
+<p class="sub" style="margin-top:22px">Evidência bruta: <a href="https://github.com/inematds/jev-gw/blob/main/reports/smoke-2026-09-22.jsonl">reports/smoke-2026-09-22.jsonl</a>. Isto é teste de integraçêo e de contrato — <strong>nêo é benchmark de qualidade de decisêo</strong>, e nenhuma economia é afirmada sem mediçêo comparável.</p>
 </div></section>
 <section id="roadmap"><div class="wrap">
 <span class="chip">Roadmap</span>
-<h2>O que existe e o que não existe</h2>
-<p class="sub">Estado real em 22/09/2026, sem promessa do que ainda não foi escrito.</p>
-<div class="phase"><div class="tag">Pronto</div><div class="d"><strong>Biblioteca, serviço HTTP e CLI</strong><span>Mesma função por trás das três. 23 testes passando, incluindo o caminho de falha e o servidor de ponta a ponta.</span></div></div>
+<h2>O que existe e o que nêo existe</h2>
+<p class="sub">Estado real em 22/09/2026, sem promessa do que ainda nêo foi escrito.</p>
+<div class="phase"><div class="tag">Pronto</div><div class="d"><strong>Biblioteca, serviço HTTP e CLI</strong><span>Mesma funçêo por trás das três. 23 testes passando, incluindo o caminho de falha e o servidor de ponta a ponta.</span></div></div>
 <div class="phase"><div class="tag">Pronto</div><div class="d"><strong>Teto, cache, registro e painel</strong><span>Cache e teto medidos numa chamada real; o painel mostra gasto do dia, latência e as últimas chamadas.</span></div></div>
-<div class="phase"><div class="tag">Não faz</div><div class="d"><strong>Não é proxy de agente de código</strong><span>Não fica entre o seu Codex/Claude Code e o modelo. Para isso existe o jev-gateway (projeto independente, TypeScript) — é complementar a este.</span></div></div>
-<div class="phase"><div class="tag">Não faz</div><div class="d"><strong>Não executa ações</strong><span>Devolve sugestão. Quem aplica é o seu sistema, com as permissões dele. Nenhuma decisão vira chamada de API, e-mail ou escrita em banco aqui dentro.</span></div></div>
+<div class="phase"><div class="tag">Nêo faz</div><div class="d"><strong>Nêo é proxy de agente de código</strong><span>Nêo fica entre o seu Codex/Claude Code e o modelo. Para isso existe o jev-gateway (projeto independente, TypeScript) — é complementar a este.</span></div></div>
+<div class="phase"><div class="tag">Nêo faz</div><div class="d"><strong>Nêo executa ações</strong><span>Devolve sugestêo. Quem aplica é o seu sistema, com as permissões dele. Nenhuma decisêo vira chamada de API, e-mail ou escrita em banco aqui dentro.</span></div></div>
 <div class="phase"><div class="tag">Próximo</div><div class="d"><strong>Limiares por pergunta</strong><span>Hoje o limiar vale para o pedido inteiro; o natural é cada pergunta ter o seu, porque o custo de errar muda por pergunta.</span></div></div>
-<div class="phase"><div class="tag">Próximo</div><div class="d"><strong>Adotar no openpcbotv3</strong><span>O bot tem hoje o próprio gateway com orçamento e modo observação. Unificar nos dois significa um lugar só para teto, custo e registro.</span></div></div>
+<div class="phase"><div class="tag">Próximo</div><div class="d"><strong>Adotar no openpcbotv3</strong><span>O bot tem hoje o próprio gateway com orçamento e modo observaçêo. Unificar nos dois significa um lugar só para teto, custo e registro.</span></div></div>
 </div></section>
 <footer>
 <div class="wrap">

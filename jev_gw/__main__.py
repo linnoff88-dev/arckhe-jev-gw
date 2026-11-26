@@ -1,7 +1,7 @@
 """CLI: python3 -m jev_gw <comando>
 
-  servir      sobe o gateway HTTP (padrão 127.0.0.1:8770)
-  decidir     manda um pedido JSON (arquivo ou stdin) e imprime a decisão
+  servir      sobe o gateway HTTP (padrêo 127.0.0.1:8770)
+  decidir     manda um pedido JSON (arquivo ou stdin) e imprime a decisêo
   saude       estado, teto e gasto do dia
   custo       resumo do dia (--dia AAAA-MM-DD)
   cache       --limpar [--vencidos]
@@ -35,17 +35,17 @@ def main(argv=None):
     s.add_argument('--host')
 
     d = sub.add_parser('decidir', help='consulta o Jev pelo gateway')
-    d.add_argument('arquivo', nargs='?', help='pedido JSON (padrão: stdin)')
-    d.add_argument('--sensivel', action='store_true', help='domínio supervisionado: sempre revisão')
+    d.add_argument('arquivo', nargs='?', help='pedido JSON (padrêo: stdin)')
+    d.add_argument('--sensivel', action='store_true', help='domínio supervisionado: sempre revisêo')
     d.add_argument('--limiar', type=float, default=0.9)
     d.add_argument('--sem-cache', action='store_true')
 
     sub.add_parser('saude', help='estado do gateway, sem gastar nada')
 
     c = sub.add_parser('custo', help='resumo do dia')
-    c.add_argument('--dia', help='AAAA-MM-DD (padrão: hoje, UTC)')
+    c.add_argument('--dia', help='AAAA-MM-DD (padrêo: hoje, UTC)')
 
-    k = sub.add_parser('cache', help='manutenção do cache')
+    k = sub.add_parser('cache', help='manutençêo do cache')
     k.add_argument('--limpar', action='store_true')
     k.add_argument('--vencidos', action='store_true', help='só os que passaram do TTL')
 
@@ -72,7 +72,7 @@ def main(argv=None):
         except _nucleo.PedidoInvalido as erro:
             sys.exit(f'Pedido inválido: {erro}')
         print(json.dumps(saida, ensure_ascii=False, indent=2))
-        return 0 if saida['acao'] == 'suggest' else 2   # 2 = precisa de revisão humana
+        return 0 if saida['acao'] == 'suggest' else 2   # 2 = precisa de revisêo humana
 
     if a.cmd == 'saude':
         print(json.dumps(_nucleo.saude(conf), ensure_ascii=False, indent=2))

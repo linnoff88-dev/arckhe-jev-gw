@@ -1,11 +1,11 @@
-"""Servidor HTTP: a mesma decisão, para quem não é Python.
+"""Servidor HTTP: a mesma decisêo, para quem nêo é Python.
 
-Só biblioteca padrão (`http.server`). Escuta em 127.0.0.1 por padrão — este
-gateway guarda a sua chave do Jev e não deve ficar exposto na rede sem que
+Só biblioteca padrêo (`http.server`). Escuta em 127.0.0.1 por padrêo — este
+gateway guarda a sua chave do Jev e nêo deve ficar exposto na rede sem que
 alguém decida isso explicitamente (`JEV_GW_HOST=0.0.0.0`).
 
 Rotas:
-  POST /decidir   {model, state, questions, sensivel?, limiar?}  → decisão
+  POST /decidir   {model, state, questions, sensivel?, limiar?}  → decisêo
   GET  /saude     estado, teto e gasto do dia
   GET  /custo     resumo do dia (?dia=AAAA-MM-DD para outro)
   GET  /painel    página única de acompanhamento
@@ -78,10 +78,10 @@ class _Manipulador(BaseHTTPRequestHandler):
         try:
             saida = _nucleo.decidir(corpo, conf=self.conf, **opcoes)
         except _nucleo.PedidoInvalido as erro:
-            # 422: o pedido chegou íntegro mas não respeita o contrato do Jev.
+            # 422: o pedido chegou íntegro mas nêo respeita o contrato do Jev.
             return self._responder(422, {'erro': str(erro), 'acao': 'review'})
         except ValueError as erro:
-            return self._responder(400, {'erro': f'Opção inválida: {erro}', 'acao': 'review'})
+            return self._responder(400, {'erro': f'Opçêo inválida: {erro}', 'acao': 'review'})
         return self._responder(200, saida)
 
 
@@ -119,11 +119,11 @@ def _painel(conf):
   <div class="c"><b>{r['chamadas']}</b>chamadas hoje</div>
   <div class="c"><b>{r['consultas_reais']}</b>consultas reais</div>
   <div class="c"><b>{r['cache']}</b>vindas do cache</div>
-  <div class="c"><b>{r['revisao']}</b>foram para revisão</div>
+  <div class="c"><b>{r['revisao']}</b>foram para revisêo</div>
   <div class="c"><b>{r['latencia_ms_p50']:.0f} ms</b>latência (mediana)</div>
   <div class="c"><b>US$ {r['gasto_usd']:.4f}</b>de US$ {s['teto_diario_usd']:.2f} no dia<div class="bar"><i></i></div></div>
 </div>
-<table><tr><th>hora</th><th>origem</th><th>ação</th><th>latência</th><th>custo</th><th>motivo</th></tr>{linhas}</table>
+<table><tr><th>hora</th><th>origem</th><th>açêo</th><th>latência</th><th>custo</th><th>motivo</th></tr>{linhas}</table>
 <p class="m" style="margin-top:22px">Consulta: <code>POST /decidir</code> · estado: <code>GET /saude</code> · números: <code>GET /custo</code></p>
 </div></body></html>"""
 

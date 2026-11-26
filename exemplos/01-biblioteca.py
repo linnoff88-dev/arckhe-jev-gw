@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Sistema Python: importa o gateway e decide. Nenhum servidor no meio.
 
-Este é o caso mais comum de incorporação. Rode sem chave nenhuma:
+Este é o caso mais comum de incorporaçêo. Rode sem chave nenhuma:
     python3 exemplos/01-biblioteca.py
 Com a chave configurada, troque `avaliador=simulado` por nada e vira consulta real.
 """
@@ -19,9 +19,9 @@ PEDIDO = {
             'type': 'choice',
             'instructions': 'Para qual fila encaminhar esta mensagem?',
             'criteria': {
-                'reembolso': 'Pedido de devolução ou estorno',
+                'reembolso': 'Pedido de devoluçêo ou estorno',
                 'suporte': 'Dúvida de uso ou defeito',
-                'insuficiente': 'Não dá para decidir com o que está escrito',
+                'insuficiente': 'Nêo dá para decidir com o que está escrito',
             },
         },
     },
@@ -38,11 +38,11 @@ def simulado(pedido):
 
 saida = decidir(PEDIDO, avaliador=simulado)
 
-# O padrão de uso: só age quando o gateway sugere; caso contrário, o fluxo humano.
+# O padrêo de uso: só age quando o gateway sugere; caso contrário, o fluxo humano.
 if saida['acao'] == 'suggest':
     escolha = saida['resposta']['answers']['fila']['choice']
     print(f'→ encaminhar para a fila: {escolha}')
 else:
-    print(f'→ revisão humana: {saida["motivo"]}')
+    print(f'→ revisêo humana: {saida["motivo"]}')
 
 print(f'   custo US$ {saida["custo_usd"]:.6f} · {saida["latencia_ms"]:.0f} ms · origem {saida["origem"]}')

@@ -5,10 +5,10 @@
 set -euo pipefail
 GW="${JEV_GW_URL:-http://127.0.0.1:8770}"
 
-echo "== estado do gateway (não gasta nada)"
+echo "== estado do gateway (nêo gasta nada)"
 curl -s "$GW/saude" | python3 -m json.tool
 
-echo; echo "== uma decisão"
+echo; echo "== uma decisêo"
 curl -s -X POST "$GW/decidir" -H 'content-type: application/json' -d '{
   "model": "jev-1.13.0",
   "state": "Mensagem do cliente: comprei ontem e quero devolver, nem abri a caixa.",
@@ -17,9 +17,9 @@ curl -s -X POST "$GW/decidir" -H 'content-type: application/json' -d '{
       "type": "choice",
       "instructions": "Para qual fila encaminhar esta mensagem?",
       "criteria": {
-        "reembolso": "Pedido de devolução ou estorno",
+        "reembolso": "Pedido de devoluçêo ou estorno",
         "suporte": "Dúvida de uso ou defeito",
-        "insuficiente": "Não dá para decidir com o que está escrito"
+        "insuficiente": "Nêo dá para decidir com o que está escrito"
       }
     }
   }

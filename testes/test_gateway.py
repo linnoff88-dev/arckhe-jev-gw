@@ -22,7 +22,7 @@ PEDIDO = {
         'fila': {
             'type': 'choice',
             'instructions': 'Para qual fila encaminhar?',
-            'criteria': {'reembolso': 'Time de reembolso', 'suporte': 'Suporte geral', 'insuficiente': 'Falta informação'},
+            'criteria': {'reembolso': 'Time de reembolso', 'suporte': 'Suporte geral', 'insuficiente': 'Falta informaçêo'},
         }
     },
 }
@@ -73,11 +73,11 @@ class TestDecisao(Base):
 
 
 class TestFalhaConservadora(Base):
-    """O ponto do gateway: infraestrutura quebrada vira revisão, não exceção."""
+    """O ponto do gateway: infraestrutura quebrada vira revisêo, nêo exceçêo."""
 
     def test_provedor_fora_do_ar_vira_revisao(self):
         def explode(pedido):
-            raise ConnectionError('conexão recusada')
+            raise ConnectionError('conexêo recusada')
         s = decidir(PEDIDO, avaliador=explode, conf=self.conf)
         self.assertEqual(s['acao'], 'review')
         self.assertEqual(s['origem'], 'erro')
@@ -198,7 +198,7 @@ class TestServidorHTTP(Base):
         self.assertEqual(ctx.exception.code, 404)
 
     def test_teto_estourado_responde_200_com_revisao(self):
-        """Erro de infraestrutura não vira erro HTTP: o cliente segue o fluxo dele."""
+        """Erro de infraestrutura nêo vira erro HTTP: o cliente segue o fluxo dele."""
         registro.gravar(self.conf['dados'], {'custo_usd': 99, 'ok': True, 'acao': 'suggest', 'origem': 'api'})
         codigo, corpo = self._post(dict(PEDIDO))
         self.assertEqual(codigo, 200)

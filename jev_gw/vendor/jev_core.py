@@ -1,19 +1,19 @@
 """Cópia vendorizada de jev_lab/core.py (Jev Decision Lab, github.com/inematds/jev).
 
-NÃO EDITE À MÃO. Ressincronize com:  python3 scripts/sincronizar-core.py
+NêO EDITE À MêO. Ressincronize com:  python3 scripts/sincronizar-core.py
 
 origem:  /home/nmaldaner/projetos/jev/jev_lab/core.py
 sha256:  1abaf0bdb70479fe7d34560eeb510f5326ed02742134d83103dd9f14ce6415cb
 data:    2026-09-22
 
 Por que vendorizar em vez de importar: jev-gw é um serviço que roda sozinho, às
-vezes em outra máquina, e não pode depender de um repo irmão estar no disco na
-versão certa. O script de sincronização mostra o diff e atualiza o hash acima.
+vezes em outra máquina, e nêo pode depender de um repo irmêo estar no disco na
+versêo certa. O script de sincronizaçêo mostra o diff e atualiza o hash acima.
 
-Única alteração aplicada na cópia: `from . import __version__` vira uma constante,
-porque aqui não existe o pacote jev_lab em volta.
+Única alteraçêo aplicada na cópia: `from . import __version__` vira uma constante,
+porque aqui nêo existe o pacote jev_lab em volta.
 """
-"""Validação e política independentes do provedor. Biblioteca padrão apenas."""
+"""Validaçêo e política independentes do provedor. Biblioteca padrêo apenas."""
 import json
 import math
 import os
@@ -40,7 +40,7 @@ def number(value, low=0, high=1):
 
 def validate_request(payload):
     if not isinstance(payload, dict):
-        raise LabError('A requisição precisa ser um objeto JSON.')
+        raise LabError('A requisiçêo precisa ser um objeto JSON.')
     if not isinstance(payload.get('model'), str) or not payload['model'].strip():
         raise LabError('Informe o modelo.')
     state = payload.get('state')
@@ -48,7 +48,7 @@ def validate_request(payload):
         raise LabError('Preencha o contexto (state).')
     questions = payload.get('questions')
     if not isinstance(questions, dict) or not 1 <= len(questions) <= 30:
-        raise LabError('Use entre 1 e 30 perguntas por requisição neste laboratório.')
+        raise LabError('Use entre 1 e 30 perguntas por requisiçêo neste laboratório.')
     for key, q in questions.items():
         if not isinstance(key, str) or not key or not isinstance(q, dict):
             raise LabError('Pergunta inválida.')
@@ -66,16 +66,16 @@ def validate_request(payload):
     except (ValueError, TypeError):
         raise LabError('Use somente valores JSON finitos.') from None
     if len(encoded) > 100_000:
-        raise LabError('Requisição maior que o limite de 100 KB do laboratório.')
+        raise LabError('Requisiçêo maior que o limite de 100 KB do laboratório.')
     return payload
 
 def validate_response(payload, response):
     validate_request(payload)
     if not isinstance(response, dict) or not isinstance(response.get('model'), str):
-        raise LabError('Resposta sem identificação do modelo.')
+        raise LabError('Resposta sem identificaçêo do modelo.')
     answers = response.get('answers')
     if not isinstance(answers, dict) or set(answers) != set(payload['questions']):
-        raise LabError('Resposta não contém exatamente as perguntas enviadas.')
+        raise LabError('Resposta nêo contém exatamente as perguntas enviadas.')
     for key, q in payload['questions'].items():
         a = answers[key]
         if not isinstance(a, dict) or a.get('type') != q['type']:
@@ -87,12 +87,12 @@ def validate_response(payload, response):
         p = a.get('probabilities')
         expected = set(q['criteria']) if q['type'] == 'choice' else {str(i) for i in range(len(q['criteria']))}
         if not isinstance(p, dict) or set(p) != expected or not all(number(x) for x in p.values()) or not math.isclose(sum(p.values()), 1, abs_tol=0.001):
-            raise LabError('Distribuição de probabilidades inválida.')
+            raise LabError('Distribuiçêo de probabilidades inválida.')
         if not number(a.get('confidence')):
             raise LabError('Confidence inválida.')
         if q['type'] == 'choice':
             if a.get('choice') not in expected or p[a['choice']] + 1e-6 < max(p.values()):
-                raise LabError('Opção escolhida fora do conjunto ou inconsistente.')
+                raise LabError('Opçêo escolhida fora do conjunto ou inconsistente.')
         else:
             legend = {str(i): level for i, level in enumerate(q['criteria'])}
             if a.get('legend') != legend:
@@ -112,15 +112,15 @@ def policy(answer, *, threshold=0.9, probability=0.9, sensitive=False):
     if not number(threshold) or not number(probability):
         raise LabError('Limiares devem estar entre 0 e 1.')
     if sensitive:
-        return {'action': 'review', 'reason': 'Domínio supervisionado: revisão humana obrigatória.'}
+        return {'action': 'review', 'reason': 'Domínio supervisionado: revisêo humana obrigatória.'}
     if answer.get('type') != 'choice':
         return {'action': 'review', 'reason': 'Noul e Score precisam de política específica do domínio.'}
     label = answer.get('choice')
     if label in ('insuficiente', 'incerto', 'outro', 'nenhum', 'ambiguo', 'conflito', 'revisar'):
-        return {'action': 'review', 'reason': 'A alternativa requer revisão ou mais informação.'}
+        return {'action': 'review', 'reason': 'A alternativa requer revisêo ou mais informaçêo.'}
     if answer.get('confidence', 0) < threshold or answer.get('probabilities', {}).get(label, 0) < probability:
-        return {'action': 'review', 'reason': 'Distribuição abaixo dos limiares didáticos.'}
-    return {'action': 'suggest', 'reason': 'Sugestão em observação. Nenhuma ação externa executada.'}
+        return {'action': 'review', 'reason': 'Distribuiçêo abaixo dos limiares didáticos.'}
+    return {'action': 'suggest', 'reason': 'Sugestêo em observaçêo. Nenhuma açêo externa executada.'}
 
 def selected_provider(provider=None, model=''):
     selected = provider or os.environ.get('JEV_PROVIDER') or ('openrouter' if model.startswith(('~typesafe/', 'typesafe/')) else 'typesafe')
@@ -143,7 +143,7 @@ def load_key(provider=None):
                 value = match[1].strip().strip("\"'")
                 if value:
                     return value
-    raise LabError(name+' não configurada no ambiente ou nos arquivos autorizados. Use os exemplos offline; não envie chaves pelo navegador.')
+    raise LabError(name+' nêo configurada no ambiente ou nos arquivos autorizados. Use os exemplos offline; nêo envie chaves pelo navegador.')
 
 def evaluate(payload, *, key=None, timeout=5, opener=urlopen, telemetry=None, provider=None):
     validate_request(payload)
@@ -165,7 +165,7 @@ def evaluate(payload, *, key=None, timeout=5, opener=urlopen, telemetry=None, pr
     for attempt in range(3):
         remaining = deadline - time.monotonic()
         if remaining <= 0:
-            raise LabError('Prazo de inferência excedido. Encaminhe para revisão.')
+            raise LabError('Prazo de inferência excedido. Encaminhe para revisêo.')
         if telemetry is not None:
             telemetry.update(attempts=attempt+1, retries=attempt)
         req = Request(ENDPOINTS[provider], data=json.dumps(wire).encode(), headers={'Authorization': 'Bearer '+key, 'Content-Type': 'application/json', 'User-Agent': 'JevDecisionLab/'+__version__}, method='POST')
@@ -179,7 +179,7 @@ def evaluate(payload, *, key=None, timeout=5, opener=urlopen, telemetry=None, pr
             return result
         except HTTPError as exc:
             if exc.code not in (429, 529, 502, 503, 504) or attempt == 2:
-                raise LabError(f'Provedor retornou HTTP {exc.code}. Nenhuma decisão executada.') from None
+                raise LabError(f'Provedor retornou HTTP {exc.code}. Nenhuma decisêo executada.') from None
             retry = exc.headers.get('Retry-After', '')
             try:
                 delay = max(float(retry), 0.25 * 2**attempt) if retry else 0.25 * 2**attempt
@@ -188,10 +188,10 @@ def evaluate(payload, *, key=None, timeout=5, opener=urlopen, telemetry=None, pr
                 try: delay = max(0.25 * 2**attempt, parsedate_to_datetime(retry).timestamp() - time.time())
                 except (ValueError, TypeError, OverflowError): delay = 0.25 * 2**attempt
             if not math.isfinite(delay) or delay >= deadline - time.monotonic():
-                raise LabError('Retry-After excede o prazo. Encaminhe para revisão.') from None
+                raise LabError('Retry-After excede o prazo. Encaminhe para revisêo.') from None
             time.sleep(delay)
         except (URLError, TimeoutError, OSError):
-            raise LabError('Não foi possível concluir a conexão. Nenhuma decisão executada.') from None
+            raise LabError('Nêo foi possível concluir a conexêo. Nenhuma decisêo executada.') from None
         except (json.JSONDecodeError, UnicodeDecodeError):
             raise LabError('Provedor retornou JSON inválido.') from None
     raise LabError('Tentativas esgotadas.')
@@ -204,7 +204,7 @@ def baseline(text):
     return hits[0] if len(hits) == 1 else 'insuficiente'
 
 def batch(path):
-    """Avalia a baseline de regras em dados rotulados. Não mede Jev."""
+    """Avalia a baseline de regras em dados rotulados. Nêo mede Jev."""
     rows, seen = [], set()
     for line_no, line in enumerate(Path(path).read_text().splitlines(), 1):
         if not line.strip(): continue
@@ -229,4 +229,4 @@ def batch(path):
         fp=sum(r['expected']!=cls and r['predicted']==cls for r in rows)
         fn=sum(r['expected']==cls and r['predicted']!=cls for r in rows)
         f1s.append(2*tp/(2*tp+fp+fn) if 2*tp+fp+fn else 0)
-    return {'provider': 'regras-lexicais', 'dataset': str(path), 'count': len(rows), 'accuracy': sum(r['correct'] for r in rows)/len(rows), 'macro_f1': sum(f1s)/len(f1s), 'confusion': matrix, 'rows': rows, 'note': 'Resultado da baseline local; não é benchmark Jev.'}
+    return {'provider': 'regras-lexicais', 'dataset': str(path), 'count': len(rows), 'accuracy': sum(r['correct'] for r in rows)/len(rows), 'macro_f1': sum(f1s)/len(f1s), 'confusion': matrix, 'rows': rows, 'note': 'Resultado da baseline local; nêo é benchmark Jev.'}

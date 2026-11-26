@@ -1,11 +1,11 @@
-"""Cache por impressão digital do pedido, em arquivo, com validade curta.
+"""Cache por impressêo digital do pedido, em arquivo, com validade curta.
 
 Dois pedidos idênticos (mesmo modelo, mesmo contexto, mesmas perguntas) dentro
 da validade devolvem a mesma resposta sem gastar crédito. É o caso comum de
-sistema em produção: a mesma mensagem reprocessada, o retry do cliente, o lote
+sistema em produçêo: a mesma mensagem reprocessada, o retry do cliente, o lote
 que repete um item.
 
-Em arquivo, e não em memória, porque o gateway pode ser reiniciado (e porque
+Em arquivo, e nêo em memória, porque o gateway pode ser reiniciado (e porque
 biblioteca embutida em processo curto perderia o cache toda vez).
 """
 import hashlib
@@ -15,7 +15,7 @@ from pathlib import Path
 
 
 def impressao(pedido: dict) -> str:
-    """Identidade do pedido. Ordena chaves para não depender da ordem do JSON."""
+    """Identidade do pedido. Ordena chaves para nêo depender da ordem do JSON."""
     bruto = json.dumps(pedido, ensure_ascii=False, sort_keys=True, allow_nan=False)
     return hashlib.sha256(bruto.encode()).hexdigest()
 

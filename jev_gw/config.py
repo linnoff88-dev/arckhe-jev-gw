@@ -1,6 +1,6 @@
-"""Configuração do gateway: só variáveis de ambiente, sem arquivo de config.
+"""Configuraçêo do gateway: só variáveis de ambiente, sem arquivo de config.
 
-Tudo tem padrão utilizável. O gateway precisa subir com `python3 -m jev_gw servir`
+Tudo tem padrêo utilizável. O gateway precisa subir com `python3 -m jev_gw servir`
 sem ninguém ter configurado nada — a chave só é exigida quando a primeira consulta
 real acontece.
 """
@@ -22,7 +22,7 @@ def _numero(nome, padrao, minimo=0.0):
     except ValueError:
         raise ValueError(f'{nome} precisa ser um número. Recebi: {bruto!r}') from None
     if valor < minimo:
-        raise ValueError(f'{nome} não pode ser menor que {minimo}.')
+        raise ValueError(f'{nome} nêo pode ser menor que {minimo}.')
     return valor
 
 
