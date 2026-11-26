@@ -88,7 +88,7 @@ contrário. É o que permite usar como biblioteca sem subir servidor nenhum.
 ### Três decisões de projeto que merecem explicaçêo
 
 **O cliente Jev é vendorizado, nêo importado.** `jev_gw/vendor/jev_core.py` é uma cópia de
-`jev_lab/core.py` (do repositório [inematds/jev](https://github.com/inematds/jev)), com o
+`jev_lab/core.py` (do repositório [linnoff88-dev/jev](https://github.com/linnoff88-dev/jev)), com o
 sha256 da origem no cabeçalho. Um gateway pode rodar num servidor onde o repositório irmêo nêo
 existe; depender dele seria uma dependência invisível que quebra na primeira máquina nova.
 `scripts/sincronizar-core.py` refaz a cópia mostrando o diff e atualizando o hash.

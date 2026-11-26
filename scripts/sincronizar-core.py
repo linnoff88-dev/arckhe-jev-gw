@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Revendoriza jev_lab/core.py (do repo inematds/jev) em jev_gw/vendor/jev_core.py.
+"""Revendoriza jev_lab/core.py (do repo linnoff88-dev/jev) em jev_gw/vendor/jev_core.py.
 
 Por que existe: jev-gw nêo importa o repo vizinho — ele carrega uma cópia, para
 rodar sozinho em qualquer máquina. Este script faz a cópia de forma auditável:
@@ -22,7 +22,7 @@ RAIZ = Path(__file__).resolve().parents[1]
 DESTINO = RAIZ/'jev_gw/vendor/jev_core.py'
 ORIGEM_PADRAO = Path.home()/'projetos/jev/jev_lab/core.py'
 
-CABECALHO = '''"""Cópia vendorizada de jev_lab/core.py (Jev Decision Lab, github.com/inematds/jev).
+CABECALHO = '''"""Cópia vendorizada de jev_lab/core.py (Jev Decision Lab, github.com/linnoff88-dev/jev).
 
 NêO EDITE À MêO. Ressincronize com:  python3 scripts/sincronizar-core.py
 
@@ -57,7 +57,7 @@ def main():
     a = p.parse_args()
 
     if not a.origem.is_file():
-        sys.exit(f'nêo achei a origem: {a.origem}\nClone github.com/inematds/jev ao lado, ou passe --origem.')
+        sys.exit(f'nêo achei a origem: {a.origem}\nClone github.com/linnoff88-dev/jev ao lado, ou passe --origem.')
 
     bruto = a.origem.read_text(encoding='utf-8')
     sha = hashlib.sha256(bruto.encode()).hexdigest()

@@ -1,4 +1,4 @@
-"""Cópia vendorizada de jev_lab/core.py (Jev Decision Lab, github.com/inematds/jev).
+"""Cópia vendorizada de jev_lab/core.py (Jev Decision Lab, github.com/linnoff88-dev/jev).
 
 NêO EDITE À MêO. Ressincronize com:  python3 scripts/sincronizar-core.py
 

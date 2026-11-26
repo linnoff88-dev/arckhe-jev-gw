@@ -8,11 +8,11 @@
 
 **ê°Å¸â¡Â§ê°Å¸â¡Â· [PortuguêÂªs](README.md) êÂ· ê°Å¸â¡Âºê°Å¸â¡Â¸ [English](README.en.md) êÂ· ê°Å¸â¡Âªê°Å¸â¡Â¸ [EspaêÂ±ol](README.es.md)**
 
-[![jev-gw](guia/assets/banner.jpg)](https://inematds.github.io/jev-gw/guia/)
+[![jev-gw](guia/assets/banner.jpg)](https://linnoff88-dev.github.io/arckhe-/guia/)
 
 ## ê°Å¸ââ Guia de uso
 
-Guia completo (landing + passo a passo): **https://inematds.github.io/jev-gw/guia/**
+Guia completo (landing + passo a passo): **https://linnoff88-dev.github.io/arckhe-/guia/**
 
 Porta êÂºnica para toda consulta ao [Jev](https://docs.typesafe.ai/introduction) de um sistema:
 valida o pedido, respeita um **teto de gasto diêÂ¡rio**, aproveita **cache**, aplica a **polêÂ­tica
@@ -74,7 +74,7 @@ dependêÂªncia).
 ## Instalar
 
 ```bash
-git clone https://github.com/inematds/jev-gw.git
+git clone https://github.com/linnoff88-dev/jev-gw.git
 cd jev-gw
 python3 -m unittest discover -s testes     # 23 testes, nenhum gasta crêÂ©dito
 ```
@@ -129,14 +129,14 @@ Lista completa em [ARQUITETURA.md, seêÂ§êÂ£o 6](ARQUITETURA.md#6-o-que
 
 ## Relacionados
 
-- [Jev Decision Lab](https://github.com/inematds/jev) ê¢â¬â o laboratêÂ³rio: 20 casos, 17 pacotes,
+- [Jev Decision Lab](https://github.com/linnoff88-dev/jev) ê¢â¬â o laboratêÂ³rio: 20 casos, 17 pacotes,
   experimentos e mêÂ©tricas. êâ° de lêÂ¡ que vem o cliente Jev usado aqui (vendorizado).
-- [Curso Jev & Laya](https://inematds.github.io/jev-curso/) ê¢â¬â decisêÂµes estruturadas na prêÂ¡tica.
-- [Acervo Jev no Eventos INEMA](https://eventos.inema.pro/jev/).
+- [Curso Jev & Laya](https://linnoff88-dev.github.io/arckhe-/) ê¢â¬â decisêÂµes estruturadas na prêÂ¡tica.
+- [Acervo Jev no Eventos ARCKHÉ](https://eventos.ARCKHÉ.pro/jev/).
 
 ## LicenêÂ§a
 
-MIT. O cliente vendorizado (`jev_gw/vendor/jev_core.py`) vem do Jev Decision Lab, tambêÂ©m INEMA.
+MIT. O cliente vendorizado (`jev_gw/vendor/jev_core.py`) vem do Jev Decision Lab, tambêÂ©m ARCKHÉ.
 "jev" êÂ© o modelo da TypeSafe; este projeto êÂ© um cliente da API pêÂºblica dela, sem vêÂ­nculo.
 
 ---

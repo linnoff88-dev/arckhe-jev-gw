@@ -2,11 +2,11 @@
 
 **🇧🇷 [Português](README.md) · 🇺🇸 [English](README.en.md) · 🇪🇸 [Español](README.es.md)**
 
-[![jev-gw](guia/assets/banner.jpg)](https://inematds.github.io/jev-gw/guia/es/)
+[![jev-gw](guia/assets/banner.jpg)](https://linnoff88-dev.github.io/arckhe-/guia/es/)
 
 ## 📖 Guía de uso
 
-Guía completa (landing + paso a paso): **https://inematds.github.io/jev-gw/guia/es/**
+Guía completa (landing + paso a paso): **https://linnoff88-dev.github.io/arckhe-/guia/es/**
 
 Punto de acceso único para todas las consultas de un sistema a [Jev](https://docs.typesafe.ai/introduction):
 valida la solicitud, respeta un **límite de gasto diario**, aprovecha la **caché**, aplica la **política
@@ -68,7 +68,7 @@ dependencias).
 ## Instalar
 
 ```bash
-git clone https://github.com/inematds/jev-gw.git
+git clone https://github.com/linnoff88-dev/jev-gw.git
 cd jev-gw
 python3 -m unittest discover -s testes     # 23 pruebas, ninguna consume créditos
 ```
@@ -123,12 +123,12 @@ Lista completa en [ARQUITETURA.md, sección 6](ARQUITETURA.md#6-o-que-este-gatew
 
 ## Relacionados
 
-- [Jev Decision Lab](https://github.com/inematds/jev) — el laboratorio: 20 casos, 17 paquetes,
+- [Jev Decision Lab](https://github.com/linnoff88-dev/jev) — el laboratorio: 20 casos, 17 paquetes,
   experimentos y métricas. De ahí proviene el cliente Jev que se usa aquí (vendorizado).
-- [Curso Jev & Laya](https://inematds.github.io/jev-curso/) — decisiones estructuradas en la práctica.
-- [Acervo Jev no Eventos INEMA](https://eventos.inema.pro/jev/).
+- [Curso Jev & Laya](https://linnoff88-dev.github.io/arckhe-/) — decisiones estructuradas en la práctica.
+- [Acervo Jev no Eventos ARCKHÉ](https://eventos.ARCKHÉ.pro/jev/).
 
 ## Licencia
 
-MIT. El cliente vendorizado (`jev_gw/vendor/jev_core.py`) proviene de Jev Decision Lab, también de INEMA.
+MIT. El cliente vendorizado (`jev_gw/vendor/jev_core.py`) proviene de Jev Decision Lab, también de ARCKHÉ.
 "jev" es el modelo de TypeSafe; este proyecto es un cliente de su API pública, sin afiliación.
